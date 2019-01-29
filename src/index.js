@@ -4,7 +4,6 @@ const ethjs = require('ethereumjs-util');
 const FlexEther = require('flex-ether');
 const coder = require('./coder');
 const util = require('./util');
-const BigNumber = require('bignumber.js');
 const EventEmitter = require('events');
 const assert = require('assert');
 
@@ -408,6 +407,7 @@ function augmentReceipt(inst, address, receipt) {
 			continue;
 		for (let log of groups[contract]) {
 			const def = findLogDef(abi, log.topics[0]);
+
 			if (def) {
 				const decoded = decodeLogItem(def, log);
 				if (decoded)
@@ -433,6 +433,7 @@ function findLogDef(abi, signature) {
 
 function decodeLogItem(def, log) {
 	const args = coder.decodeLogItemArgs(def, log);
+
 	return {
 		name: def.name,
 		args: args,
@@ -475,6 +476,7 @@ async function createCallData(inst, def, args, opts) {
 		return util.addHexPrefix(bytecode) +
 			abi.encodeParameters(def.inputs, _args).substr(2);
 	}
+
 	return abi.encodeFunctionCall(def, _args);
 }
 

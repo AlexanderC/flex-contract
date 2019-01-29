@@ -1,10 +1,8 @@
 'use strict'
 const _ = require('lodash');
-const Web3 = require('web3');
+const coder = require('web3-eth-abi');
 const assert = require('assert');
 const ethjs = require('ethereumjs-util');
-
-const _coder = (new Web3()).eth.abi;
 
 function encodeLogTopicsFilter(def, args=[]) {
 	const topicArgs = [];
@@ -17,23 +15,23 @@ function encodeLogTopicsFilter(def, args=[]) {
 				topicArgs.push(null);
 		}
 	}
-	return [_coder.encodeEventSignature(def), ...topicArgs];
+	return [coder.encodeEventSignature(def), ...topicArgs];
 }
 
 function decodeCallOutput(outputs, data) {
 	return normalizeDecodedOutput(
 		outputs,
-		_coder.decodeParameters(outputs, data));
+		coder.decodeParameters(outputs, data));
 }
 
 function encodeLogSignature(def) {
-	return _coder.encodeEventSignature(def);
+	return coder.encodeEventSignature(def);
 }
 
 function decodeLogItemArgs(def, log) {
 	return normalizeDecodedOutput(
 		def.inputs,
-		_coder.decodeLog(
+		coder.decodeLog(
 			def.inputs,
 			log.data,
 			log.topics.slice(1)));
@@ -41,7 +39,7 @@ function decodeLogItemArgs(def, log) {
 
 function encodeParameter(type, value) {
 	assert(!_.isNil(value));
-	return _coder.encodeParameter(type, normalizeEncodeValue(type, value));
+	return coder.encodeParameter(type, normalizeEncodeValue(type, value));
 }
 
 function normalizeDecodedOutput(outputs, decoded) {
@@ -66,7 +64,7 @@ function normalizeDecodedValue(type, value) {
 	assert(elementType);
 	// Convert addresses to checksummed addresses.
 	if (elementType == 'address')
-		return ethjs.toChecksumAddress(value);
+		return value && ethjs.toChecksumAddress(value);
 	// Convert integers to strings.
 	if (/^u?int/.test(elementType) && _.isObject(value))
 		return value.toString(10);
