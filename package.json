@@ -14,7 +14,7 @@
 	"license": "Apache-2.0",
 	"scripts": {
 		"test": "mocha --timeout 8000 ./test/*.js",
-		"postinstall": "patch $(npm root)/web3-eth-abi/dist/web3-eth-abi.cjs.js < ./patch/web3-eth-abi.txt"
+		"postinstall": "if [ -d $(npm root)'/web3-eth-abi' ]; then patch $(npm root)/web3-eth-abi/dist/web3-eth-abi.cjs.js < patch/web3-eth-abi.txt; else echo 'web3-eth-abi module not installed. Skipping...'; fi"
 	},
 	"dependencies": {
 		"ethereumjs-util": "^6.0.0",
