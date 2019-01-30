@@ -14,7 +14,7 @@ if [ -d "$(npm root)/web3-eth-abi" ]; then
   patch_web3
 elif [ -d "$(pwd)/../../node_modules/web3-eth-abi/" ]; then
   echo 'web3-eth-abi module not installed. Linking from parent module.'
-  ln -s "$(pwd)/../../node_modules/web3-eth-abi/" "$(npm root)/web3-eth-abi"
+  ln -s "$(pwd)/../../node_modules/web3-eth-abi" "$(npm root)/web3-eth-abi"
   patch_web3
 else
   echo 'web3-eth-abi module not installed. Skipping...'
