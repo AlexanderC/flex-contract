@@ -1,8 +1,10 @@
 'use strict'
 const _ = require('lodash');
-const coder = require('web3-eth-abi');
+const { AbiCoder } = require('web3-eth-abi');
 const assert = require('assert');
 const ethjs = require('ethereumjs-util');
+
+const coder = new AbiCoder();
 
 function encodeLogTopicsFilter(def, args=[]) {
 	const topicArgs = [];
