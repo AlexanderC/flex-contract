@@ -1,0 +1,33 @@
+@@ -5,12 +5,12 @@
+ function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
+ 
+ var Utils = require('web3-utils');
+-var abiCoder = require('ethers/utils/abi-coder');
+-var _typeof = _interopDefault(require('@babel/runtime/helpers/typeof'));
+ var _classCallCheck = _interopDefault(require('@babel/runtime/helpers/classCallCheck'));
+ var _createClass = _interopDefault(require('@babel/runtime/helpers/createClass'));
+ var isArray = _interopDefault(require('lodash/isArray'));
+ var isObject = _interopDefault(require('lodash/isObject'));
++var abiCoder = require('ethers/utils/abi-coder');
++var _typeof = _interopDefault(require('@babel/runtime/helpers/typeof'));
+ 
+ var AbiCoder =
+ function () {
+@@ -151,12 +151,14 @@
+         }
+       });
+       var nonIndexedData = data;
+-      var notIndexedParams = nonIndexedData ? this.decodeParameters(notIndexedInputs, nonIndexedData) : [];
++      var notIndexedParams = nonIndexedData ? this.decodeParameters(notIndexedInputs.filter(Boolean), nonIndexedData) : [];
++      var notIndexedOffset = 0;
+       var returnValues = {};
+       inputs.forEach(function (res, i) {
++        if (res.indexed) notIndexedOffset++;
+         returnValues[i] = res.type === 'string' ? '' : null;
+-        if (typeof notIndexedParams[i] !== 'undefined') {
+-          returnValues[i] = notIndexedParams[i];
++        if (!res.indexed && typeof notIndexedParams[i - notIndexedOffset] !== 'undefined') {
++          returnValues[i] = notIndexedParams[i - notIndexedOffset];
+         }
+         if (typeof indexedParams[i] !== 'undefined') {
+           returnValues[i] = indexedParams[i];

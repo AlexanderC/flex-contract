@@ -13,13 +13,14 @@
 	"author": "Lawrence Forman <me@merklejerk.com>",
 	"license": "Apache-2.0",
 	"scripts": {
-		"test": "mocha --timeout 8000 ./test/*.js"
+		"test": "mocha --timeout 8000 ./test/*.js",
+		"postinstall": "patch node_modules/web3-eth-abi/dist/web3-eth-abi.cjs.js < patch/web3-eth-abi.txt"
 	},
 	"dependencies": {
 		"ethereumjs-util": "^6.0.0",
 		"flex-ether": "AlexanderC/flex-ether",
 		"lodash": "^4.17.11",
-		"web3-eth-abi": "AlexanderC/web3.js#1.0"
+		"web3-eth-abi": "^1.0.0-beta.41"
 	},
 	"devDependencies": {
 		"ganache-cli": "^6.1.5",
